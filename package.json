@@ -1,0 +1,23 @@
+{
+  "name": "poc-graphql",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node ./src/index.ts",
+    "start": "nodemon ./dist/index.js",
+    "prod": "npm run build && npm run start"
+  },
+  "dependencies": {
+    "chai": "4.2.0",
+    "mocha": "5.2.0",
+    "nodemon": "^1.18.10"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.6",
+    "ts-node": "8.0.2",
+    "typescript": "3.3.3333"
+  }
+}
