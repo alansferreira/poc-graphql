@@ -1,14 +1,13 @@
 {
     "compilerOptions": {
         "target": "es6",
-        "lib": ["es6", "dom"],
+        "lib": ["es6", "esnext.asynciterable"],
         "module": "commonjs",
-        "moduleResolution": "node",
-        "esModuleInterop": true,
-        "paths": { "*": ["types/*"] },
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
-        "pretty": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "paths": { "*": ["types/*"] },
         "sourceMap": true,
         "outDir": "./dist",
         "baseUrl": "./src"
