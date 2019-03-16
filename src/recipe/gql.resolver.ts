@@ -6,7 +6,7 @@ import { Query, Arg, Mutation, FieldResolver, Root, Resolver } from "type-graphq
 import { IRecipe } from "./interface";
 import { RecipeOrm } from "./db.model";
 
-@Resolver(RecipeGql)
+@Resolver(of => RecipeGql)
 export class RecipeResolver {
   constructor(
     // constructor injection of service
@@ -14,8 +14,8 @@ export class RecipeResolver {
   ) {}
 
   @Query(returns => RecipeGql, { nullable: true })
-  async recipe(@Arg("recipeId") recipeId: string) {
-    return this.recipeService.getOne(recipeId);
+  async recipe(@Arg("recipeId", type => String) recipeId: string): Promise<RecipeGql> {
+    return this.orm2Qgl(await this.recipeService.getOne(recipeId));
   }
 
   @Query(returns => [RecipeGql])
@@ -27,28 +27,28 @@ export class RecipeResolver {
   }
 
   @Mutation(returns => RecipeGql)
-  async addRecipe(@Arg("recipe") recipe: RecipeInput): Promise<RecipeGql> {
+  async addRecipe(@Arg("recipe", type => RecipeInput) recipe: RecipeInput): Promise<RecipeGql> {
     return this.orm2Qgl(await this.recipeService.add(recipe));
   }
 
-  @FieldResolver()
-  async numberInCollection(@Root() recipe: RecipeGql): Promise<number> {
-    const index = await this.recipeService.findIndex(this.gql2Orm(recipe));
-    return index + 1;
-  }
+  // @FieldResolver()
+  // async numberInCollection(@Root() recipe: RecipeGql): Promise<number> {
+  //   const index = await this.recipeService.findIndex(this.gql2Orm(recipe));
+  //   return index + 1;
+  // }
 
 
   orm2Qgl(orm: RecipeOrm): RecipeGql{
     return <RecipeGql>{
       ...orm, 
-      ingredients: JSON.parse(orm.ingredients)
+      ingredients: JSON.parse(orm.ingredients ? orm.ingredients : "[]")
     }
   }
 
   gql2Orm(gql: RecipeGql): RecipeOrm{
     return <RecipeOrm>{
       ...gql, 
-      ingredients: JSON.stringify(gql.ingredients)
+      ingredients: JSON.stringify(gql.ingredients ? gql.ingredients : null)
     }
   }
 

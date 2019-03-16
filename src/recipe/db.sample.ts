@@ -23,5 +23,9 @@ export const sampleRecipes = [
 ];
 
 function createRecipe(recipeData: RecipeInput): RecipeOrm {
-  return plainToClass(RecipeOrm, recipeData);
+
+  return plainToClass(RecipeOrm, <RecipeOrm>{
+    ...recipeData, 
+    ingredients: JSON.stringify(recipeData.ingredients ? recipeData.ingredients : null)
+  });
 }
